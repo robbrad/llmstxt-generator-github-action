@@ -69,17 +69,17 @@ describe('file-scanner', () => {
       expect(files).toHaveLength(0);
     });
 
-    it('should find both .md and .mdx files', async () => {
+    it('should find .md, .mdx, and .markdown files', async () => {
       await fs.promises.writeFile(path.join(TEST_DIR, 'file1.md'), '# MD File');
       await fs.promises.writeFile(path.join(TEST_DIR, 'file2.mdx'), '# MDX File');
       await fs.promises.writeFile(path.join(TEST_DIR, 'file3.markdown'), '# Markdown File');
 
       const files = await scanMarkdownFiles(TEST_DIR);
 
-      expect(files).toHaveLength(2);
+      expect(files).toHaveLength(3);
       expect(files).toContain('file1.md');
       expect(files).toContain('file2.mdx');
-      expect(files).not.toContain('file3.markdown');
+      expect(files).toContain('file3.markdown');
     });
 
     it('should normalize path separators', async () => {
@@ -106,6 +106,40 @@ describe('file-scanner', () => {
       expect(files).toContain('README.md');
       expect(files).toContain('docs/guide.md');
       expect(files).not.toContain('archive/old.md');
+    });
+
+    it('should handle comma-separated exclude patterns', async () => {
+      await fs.promises.mkdir(path.join(TEST_DIR, 'docs'), { recursive: true });
+      await fs.promises.mkdir(path.join(TEST_DIR, 'draft'), { recursive: true });
+      await fs.promises.mkdir(path.join(TEST_DIR, 'node_modules'), { recursive: true });
+      await fs.promises.writeFile(path.join(TEST_DIR, 'README.md'), '# Test');
+      await fs.promises.writeFile(path.join(TEST_DIR, 'docs/guide.md'), '# Guide');
+      await fs.promises.writeFile(path.join(TEST_DIR, 'draft/wip.md'), '# WIP');
+      await fs.promises.writeFile(path.join(TEST_DIR, 'node_modules/dep.md'), '# Dep');
+
+      const files = await scanMarkdownFiles(TEST_DIR, '**/draft/**,**/node_modules/**');
+
+      expect(files).toHaveLength(2);
+      expect(files).toContain('README.md');
+      expect(files).toContain('docs/guide.md');
+      expect(files).not.toContain('draft/wip.md');
+      expect(files).not.toContain('node_modules/dep.md');
+    });
+
+    it('should handle comma-separated patterns with spaces', async () => {
+      await fs.promises.mkdir(path.join(TEST_DIR, 'docs'), { recursive: true });
+      await fs.promises.mkdir(path.join(TEST_DIR, 'draft'), { recursive: true });
+      await fs.promises.writeFile(path.join(TEST_DIR, 'README.md'), '# Test');
+      await fs.promises.writeFile(path.join(TEST_DIR, 'docs/guide.md'), '# Guide');
+      await fs.promises.writeFile(path.join(TEST_DIR, 'draft/wip.md'), '# WIP');
+
+      // Test with spaces around commas
+      const files = await scanMarkdownFiles(TEST_DIR, '**/draft/** , **/test/**');
+
+      expect(files).toHaveLength(2);
+      expect(files).toContain('README.md');
+      expect(files).toContain('docs/guide.md');
+      expect(files).not.toContain('draft/wip.md');
     });
   });
 });

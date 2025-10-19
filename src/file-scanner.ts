@@ -12,11 +12,17 @@ export async function scanMarkdownFiles(
 ): Promise<string[]> {
   // Find all markdown files recursively
   const pattern = '**/*.{md,mdx,markdown}';
+  
+  // Parse exclude pattern - split by comma if multiple patterns provided
+  const ignorePatterns = excludePattern
+    ? excludePattern.split(',').map(p => p.trim()).filter(p => p.length > 0)
+    : [];
+  
   const options: any = {
     cwd: directory,
     nodir: true,
     dot: false,
-    ignore: excludePattern ? [excludePattern] : []
+    ignore: ignorePatterns
   };
   
   try {

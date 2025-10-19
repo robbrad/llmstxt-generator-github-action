@@ -14,7 +14,7 @@ A clear and concise description of what the bug is.
 
 1. Configure the action with these inputs:
 ```yaml
-- uses: your-org/your-repo/.github/actions/llms-txt-generator@v1
+- uses: your-org/your-repo/src@v1
   with:
     base-url: 'https://example.com'
     project-name: 'My Project'

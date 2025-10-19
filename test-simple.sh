@@ -1,5 +1,5 @@
 #!/bin/bash
-cd .github/actions/llms-txt-generator
+cd src
 npm run build && npm run bundle
 cd ../../..
 
@@ -9,4 +9,4 @@ export "INPUT_INPUT-DIRECTORY"="sample"
 export "INPUT_OUTPUT-DIRECTORY"="sample"
 export "INPUT_SECTIONS"='{"Docs": "**"}'
 
-node .github/actions/llms-txt-generator/dist/index.js
+node src/dist/index.js

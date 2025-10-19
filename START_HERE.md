@@ -113,8 +113,8 @@ This document - your navigation guide
 ### ✅ Testing Infrastructure
 
 ```
-.github/actions/llms-txt-generator/
-├── src/*.test.ts           # Unit tests
+src/
+├── src*.test.ts           # Unit tests
 └── tests/integration/      # Integration tests
 ```
 
@@ -189,7 +189,7 @@ Replace `your-org/your-repo` in:
 ### Step 3: Test Locally (10 minutes)
 
 ```bash
-cd .github/actions/llms-txt-generator
+cd src
 
 # Install dependencies
 npm install
@@ -219,7 +219,7 @@ git push origin main
 ### Step 6: Create First Release (5 minutes)
 
 ```bash
-cd .github/actions/llms-txt-generator
+cd src
 npm version 1.0.0
 npm run package
 cd ../../..
@@ -266,7 +266,7 @@ Create a test repository and use your action!
 ### Run Tests
 
 ```bash
-cd .github/actions/llms-txt-generator
+cd src
 npm test                    # Unit tests
 npm run test:integration    # Integration tests
 npm run test:all           # All tests
@@ -361,8 +361,8 @@ your-repo/
 │   └── .github/ISSUE_TEMPLATE/ ← Issue templates
 │
 ├── 🎬 Action Code
-│   └── .github/actions/llms-txt-generator/
-│       ├── src/                ← TypeScript source
+│   └── src/
+│       ├── src                ← TypeScript source
 │       ├── tests/              ← Integration tests
 │       ├── dist/               ← Bundled output
 │       └── action.yml          ← Action metadata

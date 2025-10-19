@@ -92,7 +92,7 @@ Each scenario:
 
 ### Unit Tests
 
-**Location:** `src/*.test.ts`
+**Location:** `src*.test.ts`
 
 **Framework:** Vitest
 
@@ -133,7 +133,7 @@ Integration tests create temporary fixtures:
 
 - **README.md**: Project overview and quick start
 - **QUICKSTART.md**: 5-minute setup guide
-- **.github/actions/llms-txt-generator/README.md**: Complete action documentation
+- **src/README.md**: Complete action documentation
 
 ### Developer Documentation
 
@@ -155,7 +155,7 @@ Integration tests create temporary fixtures:
 
 1. **Update version:**
    ```bash
-   cd .github/actions/llms-txt-generator
+   cd src
    npm version patch  # or minor, major
    ```
 
@@ -194,7 +194,7 @@ Users can reference:
 ```json
 {
   "build": "tsc",
-  "bundle": "ncc build src/main.ts -o dist",
+  "bundle": "ncc build srcmain.ts -o dist",
   "package": "npm run build && npm run bundle",
   "test": "vitest --run",
   "test:integration": "bash tests/integration/test-runner.sh",
@@ -209,7 +209,7 @@ Users can reference:
 ├── .github/
 │   ├── actions/
 │   │   └── llms-txt-generator/
-│   │       ├── src/                    # TypeScript source
+│   │       ├── src                    # TypeScript source
 │   │       │   ├── main.ts
 │   │       │   ├── file-scanner.ts
 │   │       │   ├── parser.ts

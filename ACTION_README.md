@@ -33,7 +33,7 @@ jobs:
       - uses: actions/checkout@v4
       
       - name: Generate llms.txt files
-        uses: ./.github/actions/llms-txt-generator
+        uses: ./src
         with:
           base-url: 'https://example.com'
           project-name: 'My Project'
@@ -106,7 +106,7 @@ The action sets the following outputs that can be used in subsequent workflow st
 ```yaml
 - name: Generate llms.txt files
   id: generate
-  uses: ./.github/actions/llms-txt-generator
+  uses: ./src
   with:
     base-url: 'https://example.com'
     project-name: 'My Project'
@@ -124,7 +124,7 @@ The action sets the following outputs that can be used in subsequent workflow st
 Minimal configuration for a simple documentation site:
 
 ```yaml
-- uses: ./.github/actions/llms-txt-generator
+- uses: ./src
   with:
     base-url: 'https://example.com'
     project-name: 'My Project'
@@ -135,7 +135,7 @@ Minimal configuration for a simple documentation site:
 Process documentation from a specific directory:
 
 ```yaml
-- uses: ./.github/actions/llms-txt-generator
+- uses: ./src
   with:
     input-directory: 'docs'
     output-directory: 'public'
@@ -149,7 +149,7 @@ Process documentation from a specific directory:
 Organize documentation into multiple sections:
 
 ```yaml
-- uses: ./.github/actions/llms-txt-generator
+- uses: ./src
   with:
     base-url: 'https://example.com'
     project-name: 'My Project'
@@ -167,7 +167,7 @@ Organize documentation into multiple sections:
 Exclude specific files or directories:
 
 ```yaml
-- uses: ./.github/actions/llms-txt-generator
+- uses: ./src
   with:
     base-url: 'https://example.com'
     project-name: 'My Project'
@@ -183,7 +183,7 @@ Automatically commit generated files:
   with:
     token: ${{ secrets.GITHUB_TOKEN }}
 
-- uses: ./.github/actions/llms-txt-generator
+- uses: ./src
   with:
     base-url: 'https://example.com'
     project-name: 'My Project'
@@ -221,7 +221,7 @@ jobs:
 
       - name: Generate llms.txt files
         id: generate
-        uses: ./.github/actions/llms-txt-generator
+        uses: ./src
         with:
           input-directory: '.'
           output-directory: '.'
@@ -316,7 +316,7 @@ Complete API documentation...
   run: ls -R docs/
 
 - name: Generate llms.txt
-  uses: ./.github/actions/llms-txt-generator
+  uses: ./src
   with:
     input-directory: 'docs'
     base-url: 'https://example.com'
@@ -434,7 +434,7 @@ base-url: 'example.com'
 - Review workflow logs for git errors
 
 ```yaml
-- uses: ./.github/actions/llms-txt-generator
+- uses: ./src
   with:
     base-url: 'https://example.com'
     project-name: 'My Project'
@@ -452,7 +452,7 @@ base-url: 'example.com'
 - Increase workflow timeout if needed
 
 ```yaml
-- uses: ./.github/actions/llms-txt-generator
+- uses: ./src
   timeout-minutes: 10
   with:
     input-directory: 'docs'  # Limit scope

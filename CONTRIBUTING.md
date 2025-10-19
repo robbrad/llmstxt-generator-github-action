@@ -22,7 +22,7 @@ cd your-repo
 2. Install dependencies:
 
 ```bash
-cd .github/actions/llms-txt-generator
+cd src
 npm install
 ```
 
@@ -42,7 +42,7 @@ npm run build
 git checkout -b feature/your-feature-name
 ```
 
-2. Make your changes in the `src/` directory
+2. Make your changes in the `src` directory
 
 3. Write or update tests for your changes
 
@@ -156,8 +156,8 @@ test: add integration tests for exclude patterns
 ## Project Structure
 
 ```
-.github/actions/llms-txt-generator/
-├── src/
+src/
+├── src
 │   ├── main.ts              # Entry point
 │   ├── file-scanner.ts      # File discovery
 │   ├── parser.ts            # Markdown parsing
@@ -187,7 +187,7 @@ inputs:
     default: 'default-value'
 ```
 
-2. Update `src/types.ts` if needed:
+2. Update `srctypes.ts` if needed:
 
 ```typescript
 export interface Config {
@@ -196,7 +196,7 @@ export interface Config {
 }
 ```
 
-3. Read the input in `src/main.ts`:
+3. Read the input in `srcmain.ts`:
 
 ```typescript
 const newParameter = core.getInput('new-parameter') || 'default-value';

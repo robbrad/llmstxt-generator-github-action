@@ -15,7 +15,7 @@ This guide explains how to publish and release the llms.txt Generator GitHub Act
 Ensure all changes are committed and tests pass:
 
 ```bash
-cd .github/actions/llms-txt-generator
+cd src
 npm test
 npm run test:integration
 ```
@@ -25,7 +25,7 @@ npm run test:integration
 Update the version in `package.json`:
 
 ```bash
-cd .github/actions/llms-txt-generator
+cd src
 npm version patch  # or minor, or major
 ```
 
@@ -77,13 +77,13 @@ Users can reference the action using:
 
 ```yaml
 # Specific version (recommended for production)
-uses: your-org/your-repo/.github/actions/llms-txt-generator@v1.0.0
+uses: your-org/your-repo/src@v1.0.0
 
 # Major version (gets latest v1.x.x)
-uses: your-org/your-repo/.github/actions/llms-txt-generator@v1
+uses: your-org/your-repo/src@v1
 
 # Latest (not recommended)
-uses: your-org/your-repo/.github/actions/llms-txt-generator@main
+uses: your-org/your-repo/src@main
 ```
 
 ## Manual Release (if needed)

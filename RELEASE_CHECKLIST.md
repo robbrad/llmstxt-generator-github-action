@@ -8,7 +8,7 @@ Use this checklist when preparing a new release of the llms.txt Generator action
 
 - [ ] All tests pass locally
   ```bash
-  cd .github/actions/llms-txt-generator
+  cd src
   npm test
   npm run test:integration
   ```
@@ -31,7 +31,7 @@ Use this checklist when preparing a new release of the llms.txt Generator action
 
 - [ ] README.md is up to date
 - [ ] CHANGELOG.md is updated with new changes
-- [ ] Action README (.github/actions/llms-txt-generator/README.md) is current
+- [ ] Action README (src/README.md) is current
 - [ ] All examples in documentation work
 - [ ] JSDoc comments are complete
 - [ ] Breaking changes are clearly documented
@@ -62,7 +62,7 @@ Use this checklist when preparing a new release of the llms.txt Generator action
 - [ ] Decide version number (major.minor.patch)
 - [ ] Update version in package.json
   ```bash
-  cd .github/actions/llms-txt-generator
+  cd src
   npm version patch  # or minor, or major
   ```
 
@@ -152,12 +152,12 @@ Use this checklist when preparing a new release of the llms.txt Generator action
 
 - [ ] Action works when referenced by tag
   ```yaml
-  uses: your-org/your-repo/.github/actions/llms-txt-generator@v1.0.0
+  uses: your-org/your-repo/src@v1.0.0
   ```
 
 - [ ] Major version tag works
   ```yaml
-  uses: your-org/your-repo/.github/actions/llms-txt-generator@v1
+  uses: your-org/your-repo/src@v1
   ```
 
 - [ ] Test in a real repository
@@ -265,7 +265,7 @@ git log $(git describe --tags --abbrev=0)..HEAD --oneline
 git log --pretty=format:"- %s (%h)" --no-merges v1.0.0..HEAD
 
 # Check bundle size
-du -h .github/actions/llms-txt-generator/dist/index.js
+du -h src/dist/index.js
 
 # Test action locally
 bash test-action.sh

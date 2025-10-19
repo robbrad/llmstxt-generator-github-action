@@ -26,7 +26,7 @@ Or manually:
 
 ```bash
 # Build and bundle the action
-cd .github/actions/llms-txt-generator
+cd src
 npm run package
 
 # Create a test fixture

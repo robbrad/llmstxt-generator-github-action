@@ -24,7 +24,7 @@ Use this checklist to verify everything is ready before publishing your action t
 
 - [ ] Unit tests pass locally
   ```bash
-  cd .github/actions/llms-txt-generator
+  cd src
   npm test
   ```
 
@@ -80,7 +80,7 @@ Replace `your-org/your-repo` in these files:
 ### Step 2: Test Locally
 
 ```bash
-cd .github/actions/llms-txt-generator
+cd src
 
 # Install dependencies
 npm install
@@ -125,7 +125,7 @@ Expected result:
 ### Step 5: Create First Release
 
 ```bash
-cd .github/actions/llms-txt-generator
+cd src
 
 # Set version to 1.0.0
 npm version 1.0.0
@@ -135,9 +135,9 @@ npm run package
 
 # Commit bundle
 cd ../../..
-git add .github/actions/llms-txt-generator/dist/
-git add .github/actions/llms-txt-generator/package.json
-git add .github/actions/llms-txt-generator/package-lock.json
+git add src/dist/
+git add src/package.json
+git add src/package-lock.json
 git commit -m "chore: release v1.0.0"
 
 # Push with tags
@@ -182,7 +182,7 @@ jobs:
           echo "This is a test." >> docs/test.md
       
       - name: Generate llms.txt
-        uses: your-org/your-repo/.github/actions/llms-txt-generator@v1
+        uses: your-org/your-repo/src@v1
         with:
           base-url: 'https://example.com'
           project-name: 'Test Project'
@@ -247,13 +247,13 @@ ls -la .github/workflows/
 ls -la *.md
 
 # Check action structure
-ls -la .github/actions/llms-txt-generator/
+ls -la src/
 
 # Check bundle exists
-ls -la .github/actions/llms-txt-generator/dist/
+ls -la src/dist/
 
 # Verify tests pass
-cd .github/actions/llms-txt-generator
+cd src
 npm test
 npm run test:integration
 

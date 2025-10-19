@@ -20,10 +20,10 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
-          cache-dependency-path: .github/actions/llms-txt-generator/package-lock.json
+          cache-dependency-path: src/package-lock.json
 
       - name: Install and build
-        working-directory: .github/actions/llms-txt-generator
+        working-directory: src
         run: |
           npm ci
           npm run package
@@ -38,7 +38,7 @@ jobs:
           EOF
 
       - name: Run action
-        uses: ./.github/actions/llms-txt-generator
+        uses: ./src
         with:
           input-directory: 'test-basic'
           output-directory: 'test-basic'
@@ -64,10 +64,10 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
-          cache-dependency-path: .github/actions/llms-txt-generator/package-lock.json
+          cache-dependency-path: src/package-lock.json
 
       - name: Install and build
-        working-directory: .github/actions/llms-txt-generator
+        working-directory: src
         run: |
           npm ci
           npm run package
@@ -97,7 +97,7 @@ jobs:
           done
 
       - name: Run action with multiple sections
-        uses: ./.github/actions/llms-txt-generator
+        uses: ./src
         with:
           input-directory: 'test-complex'
           output-directory: 'test-complex'
@@ -132,10 +132,10 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
-          cache-dependency-path: .github/actions/llms-txt-generator/package-lock.json
+          cache-dependency-path: src/package-lock.json
 
       - name: Install and build
-        working-directory: .github/actions/llms-txt-generator
+        working-directory: src
         run: |
           npm ci
           npm run package
@@ -156,7 +156,7 @@ jobs:
           EOF
 
       - name: Run action
-        uses: ./.github/actions/llms-txt-generator
+        uses: ./src
         with:
           input-directory: 'test-special'
           output-directory: 'test-special'
@@ -181,10 +181,10 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
-          cache-dependency-path: .github/actions/llms-txt-generator/package-lock.json
+          cache-dependency-path: src/package-lock.json
 
       - name: Install and build
-        working-directory: .github/actions/llms-txt-generator
+        working-directory: src
         run: |
           npm ci
           npm run package
@@ -212,7 +212,7 @@ jobs:
           EOF
 
       - name: Run action with exclude pattern
-        uses: ./.github/actions/llms-txt-generator
+        uses: ./src
         with:
           input-directory: 'test-exclude'
           output-directory: 'test-exclude'
@@ -239,10 +239,10 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
-          cache-dependency-path: .github/actions/llms-txt-generator/package-lock.json
+          cache-dependency-path: src/package-lock.json
 
       - name: Install and build
-        working-directory: .github/actions/llms-txt-generator
+        working-directory: src
         run: |
           npm ci
           npm run package
@@ -269,7 +269,7 @@ jobs:
           EOF
 
       - name: Run action (should handle gracefully)
-        uses: ./.github/actions/llms-txt-generator
+        uses: ./src
         with:
           input-directory: 'test-empty'
           output-directory: 'test-empty'
@@ -294,10 +294,10 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
-          cache-dependency-path: .github/actions/llms-txt-generator/package-lock.json
+          cache-dependency-path: src/package-lock.json
 
       - name: Install and build
-        working-directory: .github/actions/llms-txt-generator
+        working-directory: src
         run: |
           npm ci
           npm run package
@@ -325,7 +325,7 @@ jobs:
           EOF
 
       - name: Run action
-        uses: ./.github/actions/llms-txt-generator
+        uses: ./src
         with:
           input-directory: 'test-extensions'
           output-directory: 'test-extensions'

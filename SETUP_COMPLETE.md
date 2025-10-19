@@ -70,7 +70,7 @@ Change `your-org/your-repo` to your actual GitHub repository path.
 ### 2. Test Locally
 
 ```bash
-cd .github/actions/llms-txt-generator
+cd src
 
 # Install dependencies
 npm install
@@ -100,7 +100,7 @@ git push origin main
 ### 5. Create First Release
 
 ```bash
-cd .github/actions/llms-txt-generator
+cd src
 
 # Set initial version
 npm version 1.0.0
@@ -110,7 +110,7 @@ npm run package
 
 # Commit bundle
 cd ../../..
-git add .github/actions/llms-txt-generator/dist/
+git add src/dist/
 git commit -m "chore: add bundle for v1.0.0"
 
 # Push with tags
@@ -140,7 +140,7 @@ jobs:
       - uses: actions/checkout@v4
       
       - name: Generate llms.txt
-        uses: your-org/your-repo/.github/actions/llms-txt-generator@v1
+        uses: your-org/your-repo/src@v1
         with:
           base-url: 'https://example.com'
           project-name: 'Test Project'
@@ -172,8 +172,8 @@ jobs:
 - [x] `.github/PULL_REQUEST_TEMPLATE.md`
 
 ### Tests
-- [x] `.github/actions/llms-txt-generator/tests/integration/README.md`
-- [x] `.github/actions/llms-txt-generator/tests/integration/test-runner.sh`
+- [x] `src/tests/integration/README.md`
+- [x] `src/tests/integration/test-runner.sh`
 
 ### Package
 - [x] Updated `package.json` with test scripts
@@ -188,7 +188,7 @@ cat .github/workflows/ci.yml
 cat .github/workflows/release.yml
 
 # Check action builds
-cd .github/actions/llms-txt-generator
+cd src
 npm install
 npm run build
 npm run bundle

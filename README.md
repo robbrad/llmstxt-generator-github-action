@@ -40,7 +40,7 @@ jobs:
       - uses: actions/checkout@v4
       
       - name: Generate llms.txt files
-        uses: your-org/your-repo/.github/actions/llms-txt-generator@v1
+        uses: your-org/your-repo/src@v1
         with:
           base-url: 'https://example.com'
           project-name: 'My Project'
@@ -50,7 +50,7 @@ jobs:
 
 ## Documentation
 
-- [Action README](.github/actions/llms-txt-generator/README.md) - Complete usage guide
+- [Action README](src/README.md) - Complete usage guide
 - [Contributing Guide](CONTRIBUTING.md) - How to contribute
 - [Publishing Guide](PUBLISHING.md) - How to release new versions
 
@@ -59,7 +59,7 @@ jobs:
 ### Basic Usage
 
 ```yaml
-- uses: your-org/your-repo/.github/actions/llms-txt-generator@v1
+- uses: your-org/your-repo/src@v1
   with:
     base-url: 'https://example.com'
     project-name: 'My Project'
@@ -68,7 +68,7 @@ jobs:
 ### Multiple Sections
 
 ```yaml
-- uses: your-org/your-repo/.github/actions/llms-txt-generator@v1
+- uses: your-org/your-repo/src@v1
   with:
     base-url: 'https://example.com'
     project-name: 'My Project'
@@ -83,7 +83,7 @@ jobs:
 ### Custom Directory
 
 ```yaml
-- uses: your-org/your-repo/.github/actions/llms-txt-generator@v1
+- uses: your-org/your-repo/src@v1
   with:
     input-directory: 'documentation'
     output-directory: 'public'
@@ -117,7 +117,7 @@ jobs:
 ### Setup
 
 ```bash
-cd .github/actions/llms-txt-generator
+cd src
 npm install
 ```
 
@@ -153,7 +153,7 @@ npm run bundle
 ├── .github/
 │   ├── actions/
 │   │   └── llms-txt-generator/    # Main action code
-│   │       ├── src/               # TypeScript source
+│   │       ├── src               # TypeScript source
 │   │       ├── tests/             # Integration tests
 │   │       ├── dist/              # Compiled bundle
 │   │       └── action.yml         # Action metadata
@@ -203,7 +203,7 @@ The action includes multiple test layers:
 Run all tests:
 
 ```bash
-cd .github/actions/llms-txt-generator
+cd src
 npm run test:all
 ```
 
@@ -230,7 +230,7 @@ MIT
 
 - [llms.txt Specification](https://llmstxt.org/)
 - [GitHub Actions Documentation](https://docs.github.com/en/actions)
-- [Action README](.github/actions/llms-txt-generator/README.md)
+- [Action README](src/README.md)
 
 ## Support
 

@@ -62,20 +62,20 @@ This will:
 
 ### Files Modified
 
-- `.github/actions/llms-txt-generator/src/file-scanner.ts` - Added `.markdown` support
-- `.github/actions/llms-txt-generator/src/parser.ts` - Added frontmatter parsing
-- `.github/actions/llms-txt-generator/src/main.ts` - Fixed module execution
+- `src/srcfile-scanner.ts` - Added `.markdown` support
+- `src/srcparser.ts` - Added frontmatter parsing
+- `src/srcmain.ts` - Fixed module execution
 
 ### Next Steps
 
 1. **Review the generated files** in the `sample` directory
 2. **Rebuild the action** (already done):
    ```bash
-   cd .github/actions/llms-txt-generator
+   cd src
    npm run build && npm run bundle
    ```
 3. **Commit the changes**:
-   - Source files in `src/`
+   - Source files in `src`
    - Bundled file `dist/index.js`
 4. **Push to GitHub** and test the workflow
 5. **Trigger the workflow** manually or by pushing changes to trigger paths

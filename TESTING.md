@@ -8,11 +8,11 @@ The project uses a multi-layered testing approach:
 
 ### 1. Unit Tests
 
-Located in `src/*.test.ts` files, these test individual functions in isolation.
+Located in `src*.test.ts` files, these test individual functions in isolation.
 
 **Run unit tests:**
 ```bash
-cd .github/actions/llms-txt-generator
+cd src
 npm test
 ```
 
@@ -39,7 +39,7 @@ Located in `tests/integration/`, these test the complete action workflow.
 
 **Run integration tests:**
 ```bash
-cd .github/actions/llms-txt-generator
+cd src
 npm run test:integration
 ```
 
@@ -104,7 +104,7 @@ The CI workflow tests the action in a real GitHub Actions environment.
 ### Prerequisites
 
 ```bash
-cd .github/actions/llms-txt-generator
+cd src
 npm install
 ```
 
@@ -131,7 +131,7 @@ npm run test:integration
 npm test -- --watch
 
 # Run specific test file
-npm test -- src/parser.test.ts
+npm test -- srcparser.test.ts
 ```
 
 ### Debug Tests

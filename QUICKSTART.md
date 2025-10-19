@@ -26,7 +26,7 @@ jobs:
       - uses: actions/checkout@v4
       
       - name: Generate llms.txt files
-        uses: your-org/your-repo/.github/actions/llms-txt-generator@v1
+        uses: your-org/your-repo/src@v1
         with:
           base-url: 'https://your-site.com'
           project-name: 'Your Project Name'
@@ -58,7 +58,7 @@ git push
 ### Organize into Sections
 
 ```yaml
-- uses: your-org/your-repo/.github/actions/llms-txt-generator@v1
+- uses: your-org/your-repo/src@v1
   with:
     base-url: 'https://your-site.com'
     project-name: 'Your Project'
@@ -73,7 +73,7 @@ git push
 ### Exclude Files
 
 ```yaml
-- uses: your-org/your-repo/.github/actions/llms-txt-generator@v1
+- uses: your-org/your-repo/src@v1
   with:
     base-url: 'https://your-site.com'
     project-name: 'Your Project'
@@ -83,7 +83,7 @@ git push
 ### Custom Directories
 
 ```yaml
-- uses: your-org/your-repo/.github/actions/llms-txt-generator@v1
+- uses: your-org/your-repo/src@v1
   with:
     input-directory: 'documentation'
     output-directory: 'public'
@@ -96,7 +96,7 @@ git push
 ### Documentation Site
 
 ```yaml
-- uses: your-org/your-repo/.github/actions/llms-txt-generator@v1
+- uses: your-org/your-repo/src@v1
   with:
     input-directory: 'docs'
     base-url: 'https://docs.example.com'
@@ -113,7 +113,7 @@ git push
 ### GitHub Pages
 
 ```yaml
-- uses: your-org/your-repo/.github/actions/llms-txt-generator@v1
+- uses: your-org/your-repo/src@v1
   with:
     output-directory: 'docs'
     base-url: 'https://username.github.io/repo'
@@ -124,7 +124,7 @@ git push
 ### Monorepo
 
 ```yaml
-- uses: your-org/your-repo/.github/actions/llms-txt-generator@v1
+- uses: your-org/your-repo/src@v1
   with:
     input-directory: 'packages/docs'
     output-directory: 'packages/docs'
@@ -147,7 +147,7 @@ git push
   run: find . -name "*.md" -type f
 
 - name: Generate llms.txt
-  uses: your-org/your-repo/.github/actions/llms-txt-generator@v1
+  uses: your-org/your-repo/src@v1
   with:
     # ... your config
 ```
@@ -169,7 +169,7 @@ permissions:
 
 ## Next Steps
 
-- Read the [full documentation](.github/actions/llms-txt-generator/README.md)
+- Read the [full documentation](src/README.md)
 - Check out [example workflows](.github/workflows/)
 - Learn about [contributing](CONTRIBUTING.md)
 - See [testing guide](TESTING.md)

@@ -23,7 +23,7 @@ Describe how you envision this feature working.
 
 **Example workflow configuration:**
 ```yaml
-- uses: your-org/your-repo/.github/actions/llms-txt-generator@v1
+- uses: your-org/your-repo/src@v1
   with:
     new-feature: 'value'
     # ... other inputs

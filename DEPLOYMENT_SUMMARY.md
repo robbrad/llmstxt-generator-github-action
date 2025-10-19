@@ -121,7 +121,7 @@ Your llms.txt Generator GitHub Action is now fully equipped with a production-gr
 │  • Test individual functions                            │
 │  • Fast execution (< 1 second)                          │
 │  • High coverage (80%+)                                 │
-│  • Files: src/*.test.ts                                 │
+│  • Files: src*.test.ts                                 │
 └─────────────────────────────────────────────────────────┘
                           ↓
 ┌─────────────────────────────────────────────────────────┐
@@ -174,7 +174,7 @@ Your llms.txt Generator GitHub Action is now fully equipped with a production-gr
 
 ```bash
 # 1. Update version
-cd .github/actions/llms-txt-generator
+cd src
 npm version patch  # Creates tag automatically
 
 # 2. Build and bundle
@@ -252,7 +252,7 @@ Root Documentation (User-facing)
 ├── QUICKSTART.md          ← Quick setup
 ├── CONTRIBUTING.md        ← How to contribute
 └── Action Documentation
-    └── .github/actions/llms-txt-generator/README.md
+    └── src/README.md
 
 Developer Documentation
 ├── TESTING.md             ← Testing guide
@@ -399,7 +399,7 @@ You now have:
 
 ### Run Tests
 ```bash
-cd .github/actions/llms-txt-generator
+cd src
 npm test                    # Unit tests
 npm run test:integration    # Integration tests
 npm run test:all           # All tests

@@ -65,12 +65,12 @@ A **production-ready GitHub Action** with:
 
 ### Test Infrastructure (2 files)
 
-1. **`.github/actions/llms-txt-generator/tests/integration/README.md`**
-2. **`.github/actions/llms-txt-generator/tests/integration/test-runner.sh`**
+1. **`src/tests/integration/README.md`**
+2. **`src/tests/integration/test-runner.sh`**
 
 ### Package Updates (1 file)
 
-1. **`.github/actions/llms-txt-generator/package.json`** - Added test scripts
+1. **`src/package.json`** - Added test scripts
 
 ### Summary Documents (3 files)
 
@@ -137,7 +137,7 @@ A **production-ready GitHub Action** with:
 ### Three-Layer Testing
 
 ```
-Layer 1: Unit Tests (src/*.test.ts)
+Layer 1: Unit Tests (src*.test.ts)
 ├── Fast (< 1 second)
 ├── Test individual functions
 └── High coverage (80%+)
@@ -194,7 +194,7 @@ Layer 3: Scenario Tests (test-scenarios.yml)
 
 ```bash
 # 1. Update version
-cd .github/actions/llms-txt-generator
+cd src
 npm version patch  # or minor, major
 
 # 2. Build and bundle
@@ -250,7 +250,7 @@ The integration tests create real test fixtures and run the action against them:
 ### Running Integration Tests
 
 ```bash
-cd .github/actions/llms-txt-generator
+cd src
 
 # Run integration tests
 npm run test:integration

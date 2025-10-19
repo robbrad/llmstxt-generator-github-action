@@ -1095,7 +1095,7 @@ exports.toCommandValue = toCommandValue;
  *
  * @param annotationProperties
  * @returns The command properties to send with the actual annotation command
- * See IssueCommandProperties: https://github.com/actions/runner/blob/main/src/Runner.Worker/ActionCommandManager.cs#L646
+ * See IssueCommandProperties: https://github.com/actions/runner/blob/main/srcRunner.Worker/ActionCommandManager.cs#L646
  */
 function toCommandProperties(annotationProperties) {
     if (!Object.keys(annotationProperties).length) {
@@ -1502,7 +1502,7 @@ class ToolRunner extends events.EventEmitter {
         // is used.
         //
         // Since this function is a port of quote_cmd_arg from Node 4.x (technically, lib UV,
-        // see https://github.com/nodejs/node/blob/v4.x/deps/uv/src/win/process.c for details),
+        // see https://github.com/nodejs/node/blob/v4.x/deps/uv/srcwin/process.c for details),
         // pasting copyright notice from Node within this function:
         //
         //      Copyright Joyent, Inc. and other Node contributors. All rights reserved.
@@ -2929,7 +2929,7 @@ const path = __importStar(__nccwpck_require__(6928));
 const ioUtil = __importStar(__nccwpck_require__(5207));
 /**
  * Copies a file or folder.
- * Based off of shelljs - https://github.com/shelljs/shelljs/blob/9237f66c52e5daa40458f94f9565e18e8132f5a6/src/cp.js
+ * Based off of shelljs - https://github.com/shelljs/shelljs/blob/9237f66c52e5daa40458f94f9565e18e8132f5a6/srccp.js
  *
  * @param     source    source path
  * @param     dest      destination path
@@ -24903,8 +24903,8 @@ class ByteParser extends Writable {
         // on 32-bit systems. Although, on 64-bit systems, this is
         // 2^53-1 bytes.
         // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Errors/Invalid_array_length
-        // https://source.chromium.org/chromium/chromium/src/+/main:v8/src/common/globals.h;drc=1946212ac0100668f14eb9e2843bdd846e510a1e;bpv=1;bpt=1;l=1275
-        // https://source.chromium.org/chromium/chromium/src/+/main:v8/src/objects/js-array-buffer.h;l=34;drc=1946212ac0100668f14eb9e2843bdd846e510a1e
+        // https://source.chromium.org/chromium/chromium/src+/main:v8/srccommon/globals.h;drc=1946212ac0100668f14eb9e2843bdd846e510a1e;bpv=1;bpt=1;l=1275
+        // https://source.chromium.org/chromium/chromium/src+/main:v8/srcobjects/js-array-buffer.h;l=34;drc=1946212ac0100668f14eb9e2843bdd846e510a1e
         if (upper > 2 ** 31 - 1) {
           failWebsocketConnection(this.ws, 'Received payload length > 2^31 bytes.')
           return
@@ -25940,11 +25940,15 @@ const glob_1 = __nccwpck_require__(1363);
 async function scanMarkdownFiles(directory, excludePattern = '') {
     // Find all markdown files recursively
     const pattern = '**/*.{md,mdx,markdown}';
+    // Parse exclude pattern - split by comma if multiple patterns provided
+    const ignorePatterns = excludePattern
+        ? excludePattern.split(',').map(p => p.trim()).filter(p => p.length > 0)
+        : [];
     const options = {
         cwd: directory,
         nodir: true,
         dot: false,
-        ignore: excludePattern ? [excludePattern] : []
+        ignore: ignorePatterns
     };
     try {
         const files = await (0, glob_1.glob)(pattern, options);

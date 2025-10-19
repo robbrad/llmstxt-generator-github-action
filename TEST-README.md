@@ -30,7 +30,7 @@ Note: The bash script may have output buffering issues, so `test-wrapper.js` is 
 If you make changes to the action source code, rebuild it:
 
 ```bash
-cd .github/actions/llms-txt-generator
+cd src
 npm install
 npm run build
 npm run bundle
