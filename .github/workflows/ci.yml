@@ -20,18 +20,14 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
-          cache-dependency-path: src/package-lock.json
 
       - name: Install dependencies
-        working-directory: src
         run: npm ci
 
       - name: Run unit tests
-        working-directory: src
         run: npm test
 
       - name: Build TypeScript
-        working-directory: src
         run: npm run build
 
   integration-test:
@@ -48,14 +44,11 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
-          cache-dependency-path: src/package-lock.json
 
       - name: Install dependencies
-        working-directory: src
         run: npm ci
 
       - name: Build and bundle
-        working-directory: src
         run: npm run package
 
       - name: Create test fixture
@@ -100,7 +93,7 @@ jobs:
           EOF
 
       - name: Run action on test fixture
-        uses: ./src
+        uses: ./
         with:
           input-directory: 'test-fixture'
           output-directory: 'test-fixture'
@@ -219,18 +212,14 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
-          cache-dependency-path: src/package-lock.json
 
       - name: Install dependencies
-        working-directory: src
         run: npm ci
 
       - name: Build and bundle
-        working-directory: src
         run: npm run package
 
       - name: Check bundle size
-        working-directory: src
         run: |
           BUNDLE_SIZE=$(stat -f%z dist/index.js 2>/dev/null || stat -c%s dist/index.js)
           echo "Bundle size: $BUNDLE_SIZE bytes"
@@ -246,7 +235,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: action-bundle
-          path: src/dist/
+          path: dist/
 
   lint:
     name: Lint
@@ -261,12 +250,9 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
-          cache-dependency-path: src/package-lock.json
 
       - name: Install dependencies
-        working-directory: src
         run: npm ci
 
       - name: Check TypeScript compilation
-        working-directory: src
         run: npx tsc --noEmit
