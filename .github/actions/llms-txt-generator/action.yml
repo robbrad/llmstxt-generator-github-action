@@ -1,0 +1,51 @@
+name: 'Generate llms.txt Files'
+description: 'Automatically generates llms.txt and llms-full.txt from markdown files'
+author: 'Your Name'
+
+inputs:
+  input-directory:
+    description: 'Directory containing markdown files'
+    required: false
+    default: '.'
+  output-directory:
+    description: 'Directory where llms.txt files will be generated'
+    required: false
+    default: '.'
+  base-url:
+    description: 'Base URL for generating links (e.g., https://example.com)'
+    required: true
+  project-name:
+    description: 'Project name for the H1 header'
+    required: true
+  project-description:
+    description: 'Short summary for the blockquote section'
+    required: false
+    default: ''
+  exclude-pattern:
+    description: 'Glob pattern for files to exclude (e.g., "**/node_modules/**")'
+    required: false
+    default: ''
+  commit-changes:
+    description: 'Whether to commit generated files'
+    required: false
+    default: 'false'
+  sections:
+    description: 'JSON object mapping section names to directory patterns (e.g., {"Docs": "docs/**", "Examples": "examples/**"})'
+    required: false
+    default: '{"Docs": "**"}'
+
+outputs:
+  files-processed:
+    description: 'Number of markdown files processed'
+  llms-txt-path:
+    description: 'Path to the generated llms.txt file'
+  llms-full-txt-path:
+    description: 'Path to the generated llms-full.txt file'
+
+runs:
+  using: 'node20'
+  main: 'dist/index.js'
+
+branding:
+  icon: 'file-text'
+  color: 'blue'

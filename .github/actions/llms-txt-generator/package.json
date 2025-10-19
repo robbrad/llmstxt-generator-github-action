@@ -1,0 +1,33 @@
+{
+  "name": "llms-txt-generator",
+  "version": "1.0.0",
+  "description": "GitHub Action to generate llms.txt and llms-full.txt from markdown files",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "bundle": "ncc build src/main.ts -o dist --source-map --license licenses.txt",
+    "package": "npm run build && npm run bundle",
+    "test": "vitest --run",
+    "test:integration": "bash tests/integration/test-runner.sh",
+    "test:all": "npm test && npm run test:integration"
+  },
+  "keywords": [
+    "github-action",
+    "llms-txt",
+    "documentation"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@actions/core": "^1.10.1",
+    "@actions/github": "^6.0.0",
+    "glob": "^10.3.10"
+  },
+  "devDependencies": {
+    "@types/glob": "^8.1.0",
+    "@types/node": "^20.10.6",
+    "@vercel/ncc": "^0.38.1",
+    "typescript": "^5.3.3",
+    "vitest": "^1.1.0"
+  }
+}

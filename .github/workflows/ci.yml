@@ -1,0 +1,272 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: .github/actions/llms-txt-generator/package-lock.json
+
+      - name: Install dependencies
+        working-directory: .github/actions/llms-txt-generator
+        run: npm ci
+
+      - name: Run unit tests
+        working-directory: .github/actions/llms-txt-generator
+        run: npm test
+
+      - name: Build TypeScript
+        working-directory: .github/actions/llms-txt-generator
+        run: npm run build
+
+  integration-test:
+    name: Integration Test
+    runs-on: ubuntu-latest
+    needs: test
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: .github/actions/llms-txt-generator/package-lock.json
+
+      - name: Install dependencies
+        working-directory: .github/actions/llms-txt-generator
+        run: npm ci
+
+      - name: Build and bundle
+        working-directory: .github/actions/llms-txt-generator
+        run: npm run package
+
+      - name: Create test fixture
+        run: |
+          mkdir -p test-fixture/docs
+          mkdir -p test-fixture/guides
+          
+          cat > test-fixture/docs/getting-started.md << 'EOF'
+          # Getting Started
+          
+          Learn how to get started with our project.
+          
+          ## Installation
+          
+          Install the package using npm.
+          EOF
+          
+          cat > test-fixture/docs/api-reference.md << 'EOF'
+          # API Reference
+          
+          Complete API documentation for developers.
+          
+          ## Methods
+          
+          Available methods and their usage.
+          EOF
+          
+          cat > test-fixture/guides/tutorial.md << 'EOF'
+          # Tutorial
+          
+          Step-by-step tutorial for beginners.
+          
+          ## Step 1
+          
+          First step of the tutorial.
+          EOF
+          
+          cat > test-fixture/README.md << 'EOF'
+          # Test Project
+          
+          This is a test project for integration testing.
+          EOF
+
+      - name: Run action on test fixture
+        uses: ./.github/actions/llms-txt-generator
+        with:
+          input-directory: 'test-fixture'
+          output-directory: 'test-fixture'
+          base-url: 'https://example.com'
+          project-name: 'Test Project'
+          project-description: 'Integration test project'
+          sections: |
+            {
+              "Docs": "docs/**",
+              "Guides": "guides/**",
+              "General": "*.md"
+            }
+
+      - name: Verify generated files
+        run: |
+          echo "Checking for generated files..."
+          
+          if [ ! -f test-fixture/llms.txt ]; then
+            echo "❌ llms.txt not found"
+            exit 1
+          fi
+          
+          if [ ! -f test-fixture/llms-full.txt ]; then
+            echo "❌ llms-full.txt not found"
+            exit 1
+          fi
+          
+          echo "✅ Both files generated successfully"
+          
+          echo ""
+          echo "=== llms.txt content ==="
+          cat test-fixture/llms.txt
+          
+          echo ""
+          echo "=== llms-full.txt content ==="
+          cat test-fixture/llms-full.txt
+
+      - name: Validate llms.txt structure
+        run: |
+          echo "Validating llms.txt structure..."
+          
+          # Check for project name header
+          if ! grep -q "# Test Project" test-fixture/llms.txt; then
+            echo "❌ Project name header not found"
+            exit 1
+          fi
+          
+          # Check for description
+          if ! grep -q "> Integration test project" test-fixture/llms.txt; then
+            echo "❌ Project description not found"
+            exit 1
+          fi
+          
+          # Check for sections
+          if ! grep -q "## Docs" test-fixture/llms.txt; then
+            echo "❌ Docs section not found"
+            exit 1
+          fi
+          
+          if ! grep -q "## Guides" test-fixture/llms.txt; then
+            echo "❌ Guides section not found"
+            exit 1
+          fi
+          
+          # Check for links
+          if ! grep -q "https://example.com" test-fixture/llms.txt; then
+            echo "❌ Base URL not found in links"
+            exit 1
+          fi
+          
+          echo "✅ llms.txt structure is valid"
+
+      - name: Validate llms-full.txt structure
+        run: |
+          echo "Validating llms-full.txt structure..."
+          
+          # Check for source attribution
+          if ! grep -q "Source: https://example.com" test-fixture/llms-full.txt; then
+            echo "❌ Source attribution not found"
+            exit 1
+          fi
+          
+          # Check for content from markdown files
+          if ! grep -q "Getting Started" test-fixture/llms-full.txt; then
+            echo "❌ Content from getting-started.md not found"
+            exit 1
+          fi
+          
+          if ! grep -q "API Reference" test-fixture/llms-full.txt; then
+            echo "❌ Content from api-reference.md not found"
+            exit 1
+          fi
+          
+          echo "✅ llms-full.txt structure is valid"
+
+      - name: Upload test artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: integration-test-output
+          path: |
+            test-fixture/llms.txt
+            test-fixture/llms-full.txt
+
+  bundle:
+    name: Bundle
+    runs-on: ubuntu-latest
+    needs: [test, integration-test]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: .github/actions/llms-txt-generator/package-lock.json
+
+      - name: Install dependencies
+        working-directory: .github/actions/llms-txt-generator
+        run: npm ci
+
+      - name: Build and bundle
+        working-directory: .github/actions/llms-txt-generator
+        run: npm run package
+
+      - name: Check bundle size
+        working-directory: .github/actions/llms-txt-generator
+        run: |
+          BUNDLE_SIZE=$(stat -f%z dist/index.js 2>/dev/null || stat -c%s dist/index.js)
+          echo "Bundle size: $BUNDLE_SIZE bytes"
+          
+          # Warn if bundle is larger than 5MB
+          if [ $BUNDLE_SIZE -gt 5242880 ]; then
+            echo "⚠️ Warning: Bundle size is larger than 5MB"
+          else
+            echo "✅ Bundle size is acceptable"
+          fi
+
+      - name: Upload bundle artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: action-bundle
+          path: .github/actions/llms-txt-generator/dist/
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: .github/actions/llms-txt-generator/package-lock.json
+
+      - name: Install dependencies
+        working-directory: .github/actions/llms-txt-generator
+        run: npm ci
+
+      - name: Check TypeScript compilation
+        working-directory: .github/actions/llms-txt-generator
+        run: npx tsc --noEmit

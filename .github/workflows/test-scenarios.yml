@@ -1,0 +1,338 @@
+name: Test Scenarios
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Run weekly on Sundays at 00:00 UTC
+    - cron: '0 0 * * 0'
+
+jobs:
+  test-basic:
+    name: Test Basic Usage
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: .github/actions/llms-txt-generator/package-lock.json
+
+      - name: Install and build
+        working-directory: .github/actions/llms-txt-generator
+        run: |
+          npm ci
+          npm run package
+
+      - name: Create basic test fixture
+        run: |
+          mkdir -p test-basic/docs
+          cat > test-basic/docs/readme.md << 'EOF'
+          # Documentation
+          
+          Basic documentation file.
+          EOF
+
+      - name: Run action
+        uses: ./.github/actions/llms-txt-generator
+        with:
+          input-directory: 'test-basic'
+          output-directory: 'test-basic'
+          base-url: 'https://example.com'
+          project-name: 'Basic Test'
+
+      - name: Verify output
+        run: |
+          test -f test-basic/llms.txt
+          test -f test-basic/llms-full.txt
+          grep -q "# Basic Test" test-basic/llms.txt
+
+  test-complex-structure:
+    name: Test Complex Structure
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: .github/actions/llms-txt-generator/package-lock.json
+
+      - name: Install and build
+        working-directory: .github/actions/llms-txt-generator
+        run: |
+          npm ci
+          npm run package
+
+      - name: Create complex test fixture
+        run: |
+          mkdir -p test-complex/{docs,guides,api,examples}
+          
+          for i in {1..5}; do
+            cat > "test-complex/docs/doc$i.md" << EOF
+          # Document $i
+          
+          This is document number $i.
+          
+          ## Section
+          
+          Content for document $i.
+          EOF
+          done
+          
+          for i in {1..3}; do
+            cat > "test-complex/guides/guide$i.md" << EOF
+          # Guide $i
+          
+          This is guide number $i.
+          EOF
+          done
+
+      - name: Run action with multiple sections
+        uses: ./.github/actions/llms-txt-generator
+        with:
+          input-directory: 'test-complex'
+          output-directory: 'test-complex'
+          base-url: 'https://docs.example.com'
+          project-name: 'Complex Project'
+          project-description: 'A project with complex structure'
+          sections: |
+            {
+              "Documentation": "docs/**",
+              "Guides": "guides/**",
+              "API": "api/**",
+              "Examples": "examples/**"
+            }
+
+      - name: Verify sections
+        run: |
+          grep -q "## Documentation" test-complex/llms.txt
+          grep -q "## Guides" test-complex/llms.txt
+          grep -q "Document 1" test-complex/llms-full.txt
+          grep -q "Guide 1" test-complex/llms-full.txt
+
+  test-special-characters:
+    name: Test Special Characters
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: .github/actions/llms-txt-generator/package-lock.json
+
+      - name: Install and build
+        working-directory: .github/actions/llms-txt-generator
+        run: |
+          npm ci
+          npm run package
+
+      - name: Create test fixture with special characters
+        run: |
+          mkdir -p test-special/docs
+          cat > "test-special/docs/special chars & symbols.md" << 'EOF'
+          # Special Characters & Symbols
+          
+          Testing special characters: & < > " ' / \ | ? * [ ] { }
+          
+          ## Code Examples
+          
+          ```javascript
+          const test = "value";
+          ```
+          EOF
+
+      - name: Run action
+        uses: ./.github/actions/llms-txt-generator
+        with:
+          input-directory: 'test-special'
+          output-directory: 'test-special'
+          base-url: 'https://example.com'
+          project-name: 'Special Characters Test'
+
+      - name: Verify handling
+        run: |
+          test -f test-special/llms.txt
+          grep -q "Special Characters" test-special/llms.txt
+
+  test-exclude-patterns:
+    name: Test Exclude Patterns
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: .github/actions/llms-txt-generator/package-lock.json
+
+      - name: Install and build
+        working-directory: .github/actions/llms-txt-generator
+        run: |
+          npm ci
+          npm run package
+
+      - name: Create test fixture
+        run: |
+          mkdir -p test-exclude/{docs,draft,node_modules}
+          
+          cat > test-exclude/docs/public.md << 'EOF'
+          # Public Document
+          
+          This should be included.
+          EOF
+          
+          cat > test-exclude/draft/private.md << 'EOF'
+          # Private Document
+          
+          This should be excluded.
+          EOF
+          
+          cat > test-exclude/node_modules/dependency.md << 'EOF'
+          # Dependency
+          
+          This should be excluded.
+          EOF
+
+      - name: Run action with exclude pattern
+        uses: ./.github/actions/llms-txt-generator
+        with:
+          input-directory: 'test-exclude'
+          output-directory: 'test-exclude'
+          base-url: 'https://example.com'
+          project-name: 'Exclude Test'
+          exclude-pattern: '**/draft/**,**/node_modules/**'
+
+      - name: Verify exclusions
+        run: |
+          grep -q "Public Document" test-exclude/llms.txt
+          ! grep -q "Private Document" test-exclude/llms.txt || exit 1
+          ! grep -q "Dependency" test-exclude/llms.txt || exit 1
+
+  test-empty-files:
+    name: Test Empty and Malformed Files
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: .github/actions/llms-txt-generator/package-lock.json
+
+      - name: Install and build
+        working-directory: .github/actions/llms-txt-generator
+        run: |
+          npm ci
+          npm run package
+
+      - name: Create test fixture
+        run: |
+          mkdir -p test-empty/docs
+          
+          # Valid file
+          cat > test-empty/docs/valid.md << 'EOF'
+          # Valid Document
+          
+          This is valid.
+          EOF
+          
+          # Empty file
+          touch test-empty/docs/empty.md
+          
+          # File without H1
+          cat > test-empty/docs/no-h1.md << 'EOF'
+          ## Just H2
+          
+          No H1 header here.
+          EOF
+
+      - name: Run action (should handle gracefully)
+        uses: ./.github/actions/llms-txt-generator
+        with:
+          input-directory: 'test-empty'
+          output-directory: 'test-empty'
+          base-url: 'https://example.com'
+          project-name: 'Empty Files Test'
+
+      - name: Verify graceful handling
+        run: |
+          test -f test-empty/llms.txt
+          grep -q "Valid Document" test-empty/llms.txt
+
+  test-different-extensions:
+    name: Test Different File Extensions
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: .github/actions/llms-txt-generator/package-lock.json
+
+      - name: Install and build
+        working-directory: .github/actions/llms-txt-generator
+        run: |
+          npm ci
+          npm run package
+
+      - name: Create test fixture
+        run: |
+          mkdir -p test-extensions/docs
+          
+          cat > test-extensions/docs/file.md << 'EOF'
+          # Markdown File
+          
+          Standard .md file.
+          EOF
+          
+          cat > test-extensions/docs/file.mdx << 'EOF'
+          # MDX File
+          
+          MDX file with components.
+          EOF
+          
+          cat > test-extensions/docs/file.markdown << 'EOF'
+          # Markdown File
+          
+          Full .markdown extension.
+          EOF
+
+      - name: Run action
+        uses: ./.github/actions/llms-txt-generator
+        with:
+          input-directory: 'test-extensions'
+          output-directory: 'test-extensions'
+          base-url: 'https://example.com'
+          project-name: 'Extensions Test'
+
+      - name: Verify all extensions processed
+        run: |
+          grep -q "Markdown File" test-extensions/llms.txt
+          grep -q "MDX File" test-extensions/llms.txt

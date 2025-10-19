@@ -1,0 +1,30 @@
+import { glob } from 'glob';
+
+/**
+ * Recursively scans a directory for markdown files (.md, .mdx, and .markdown)
+ * @param directory - The directory to scan
+ * @param excludePattern - Glob pattern for files to exclude
+ * @returns Array of relative file paths
+ */
+export async function scanMarkdownFiles(
+  directory: string,
+  excludePattern: string = ''
+): Promise<string[]> {
+  // Find all markdown files recursively
+  const pattern = '**/*.{md,mdx,markdown}';
+  const options: any = {
+    cwd: directory,
+    nodir: true,
+    dot: false,
+    ignore: excludePattern ? [excludePattern] : []
+  };
+  
+  try {
+    const files = await glob(pattern, options);
+    // Normalize path separators for consistency
+    return files.map(file => file.replace(/\\/g, '/'));
+  } catch (error) {
+    // If directory cannot be read or doesn't exist, return empty array
+    return [];
+  }
+}
