@@ -40,7 +40,7 @@ jobs:
       - uses: actions/checkout@v4
       
       - name: Generate llms.txt files
-        uses: your-org/your-repo/src@v1
+        uses: robbrad/llmstxt-generator-github-action@0.0.1
         with:
           base-url: 'https://example.com'
           project-name: 'My Project'
