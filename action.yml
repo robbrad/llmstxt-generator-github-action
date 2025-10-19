@@ -1,4 +1,4 @@
-name: 'Generate llms.txt Files'
+name: 'Generate llms.txt Files from markdown'
 description: 'Automatically generates llms.txt and llms-full.txt from markdown files'
 author: 'Your Name'
 
