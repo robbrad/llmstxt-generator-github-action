@@ -29,7 +29,7 @@ async function commitChanges(files: string[], commitMessage: string): Promise<vo
 
     // Check if there are changes to commit (Requirement 7.4)
     const status = execSync('git status --porcelain', { encoding: 'utf-8' });
-    
+
     if (!status.trim()) {
       // Skip if no changes detected (Requirement 7.4)
       core.info('No changes detected, skipping commit');
@@ -39,7 +39,7 @@ async function commitChanges(files: string[], commitMessage: string): Promise<vo
     // Commit with descriptive message (Requirement 7.3)
     core.info(`Committing changes with message: "${commitMessage}"`);
     execSync(`git commit -m "${commitMessage}"`, { stdio: 'inherit' });
-    
+
     core.info('✓ Changes committed successfully');
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
@@ -122,7 +122,7 @@ export async function run(): Promise<void> {
     // Call parser for each discovered file (Requirement 1.1)
     const parsedFiles: MarkdownFile[] = [];
     let failedFiles = 0;
-    
+
     for (const filePath of filePaths) {
       try {
         const fullPath = path.join(absoluteInputDir, filePath);
@@ -153,7 +153,7 @@ export async function run(): Promise<void> {
     // Call generators to create both output files (Requirement 1.2)
     let llmsTxt: string;
     let llmsFullTxt: string;
-    
+
     try {
       llmsTxt = generateLlmsTxt(parsedFiles, projectName, projectDescription);
       llmsFullTxt = generateLlmsFullTxt(parsedFiles);
@@ -165,7 +165,7 @@ export async function run(): Promise<void> {
     // Call writeOutputFiles to save results (Requirement 1.2, 6.3)
     const absoluteOutputDir = path.resolve(outputDirectory);
     let result: any;
-    
+
     try {
       result = await writeOutputFiles(llmsTxt, llmsFullTxt, absoluteOutputDir, parsedFiles.length);
       core.info(`Files written to: ${absoluteOutputDir}`);
@@ -198,12 +198,12 @@ export async function run(): Promise<void> {
     // Catch and report critical errors (Requirement 6.3, 6.6)
     const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
     const errorStack = error instanceof Error ? error.stack : undefined;
-    
+
     core.error(`Action failed: ${errorMessage}`);
     if (errorStack) {
       core.debug(`Stack trace: ${errorStack}`);
     }
-    
+
     // Set action status to failed on critical errors (Requirement 6.6)
     core.setFailed(errorMessage);
   }
